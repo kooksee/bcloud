@@ -1,0 +1,203 @@
+FORMAT: 1A
+HOST: https://api.example.com
+
+# bcloud云平台API设计
+1. 本应用包含tcp服务器,http服务器以及websocket服务器
+2. tcp服务器当作一个agent放到宿主机上面
+3. http服务器以restful的方式进行资源操作
+4. websocket服务器进行事件处理,以及对页面进行消息推送
+
+
+## 多主机操作 [/host{?skip,limit,ids}]
+
+### 获得多个主机 [GET]
+Get a single note.
+
++ Parameters
+
+    + skip: `3` (number,optional) - 根据分页查询
+    + limit: `1` (number,optional) - 查询数据条数
+    + ids: `[id1,id2]` (array[string],optional) - 根据id查询数据
+
+
++ Response 200 (application/json)
+
+    + Attributes
+        + code: 200 (number) - 状态码
+        + message: 返回成功 (string) - 返回信息
+        + data: object (array[object])
+            + (object)
+                + id: host id (string) - 主机id
+                + name: local (string) - 主机名
+                + ip: 192.168.101.237 (string) - 主机ip
+                + port: 22 (number) - 主机端口号
+
+
+### 添加多个主机 [POST]
+Get a single note.
+
++ Request
+
+    + Headers
+
+            Token: Optionnal
+            
+    + Attributes (array[object])
+        + (object)
+            + id: host id (string) - 主机id
+            + name: local (string) - 主机名
+            + ip: 192.168.101.237 (string) - 主机ip
+            + port: 22 (number) - 主机端口号
+            + password: 123456 (string) - 主机密码
+            
+    + Body 
+            
+            [
+                {
+                  "id": "host id",
+                  "name": "local",
+                  "ip": "192.168.101.237",
+                  "port": 22,
+                  "password": 123456
+                }
+            ]
+            
+
+        
++ Response 200 (application/json)
+
+    + Body
+            
+            {
+              "code": 200,
+              "message": "返回成功"
+            }
+
+
+### 删除多个主机 [DELETE]
+Get a single note.
+
++ Request
+
+    + Headers
+
+            Token: Optionnal
+            
+    + Attributes
+        + ids: host id (array[string]) - 主机id
+        
+        
++ Response 200 (application/json)
+
+    + Body
+            
+            {
+              "code": 200,
+              "message": "返回成功"
+            }
+        
+
+### event-修改密码 [PUT]
+> 用socketIO实现web事件操作
+```
+Example: socket.emit('resetpassword', { id: 'data',password: '123456' });
+```
+    
+
++ Request
+
+    + Body
+    
+            {
+              "id": "host id",
+              "password": "123456"
+            }
+
++ Response 200
+
+    + Body
+            
+            {
+              "code": 200,
+              "message": "返回成功"
+            }
+        
+
+## 具体主机操作 [/host/{id}]
+
++ Parameters
+
+    + id: `68a5sdf67` (required, string) - host id
+
+
+### 获得主机信息 [GET]
+Get a single note.
+
+
++ Response 200 (application/json)
+
+    + Headers
+
+            X-Request-ID: f72fc914
+            X-Response-Time: 4ms
+            
+    + Attributes
+        + code: 200 (number) - 状态码
+        + message: 返回成功 (string) - 返回信息
+        + data: (object)
+            + id: host id (string) - 主机id
+            + name: local (string) - 主机名
+            + ip: 192.168.101.237 (string) - 主机ip
+            + port: 22 (number) - 主机端口号
+
+
+### 更新主机信息 [PUT]
+Get a single note.
+
++ Request
+
+    + Headers
+
+            Token: Optionnal
+            
+    + Attributes
+        + id: host id (string) - 主机id
+        + name: local (string) - 主机名
+        + ip: 192.168.101.237 (string) - 主机ip
+        + port: 22 (number) - 主机端口号
+
++ Response 200 (application/json)
+
+    + Headers
+
+            X-Request-ID: f72fc914
+            X-Response-Time: 4ms
+            
+    + Body
+            
+            {
+              "code": 200,
+              "message": "返回成功"
+            }
+            
+        
+### 删除主机信息 [DELETE]
+Get a single note.
+
++ Response 200 (application/json)
+
+    + Headers
+
+            X-Request-ID: f72fc914
+            X-Response-Time: 4ms
+            
+    + Body
+            
+            {
+              "code": 200,
+              "message": "返回成功"
+            }
+
+
+
+    

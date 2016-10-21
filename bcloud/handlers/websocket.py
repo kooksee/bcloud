@@ -1,9 +1,25 @@
 import uuid
 
+import datetime
 import tornado
+from tornadio2 import SocketConnection, event
 from tornado.websocket import WebSocketHandler
 
 from plugins.log import logger
+
+
+class PingConnection(SocketConnection):
+    @event
+    def ping(self, data):
+        now = datetime.datetime.now()
+        print data
+
+        return data, [now.hour, now.minute, now.second, now.microsecond / 1000]
+
+    @event
+    def stats(self):
+        print self.session.server.stats.dump()
+        return self.session.server.stats.dump()
 
 
 class BCloudSocketHandler(WebSocketHandler):

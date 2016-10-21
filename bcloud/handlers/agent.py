@@ -1,21 +1,18 @@
 # encoding=utf-8
 
-import json
 import socket
-import time
 
 from tornado import gen, iostream
-from tornado import stack_context
-from tornado.iostream import StreamClosedError
 from tornado.tcpserver import TCPServer
 
-from plugins import tornadoredis
 from plugins.log import logger
 
 
 class TcpHandler(object):
-    def __init__(self, stream, clients):
+    def __init__(self, stream, clients, application):
         self.stream = stream
+
+        self.app = application
 
         self.clients = clients
         self.client_addr = None
@@ -29,9 +26,6 @@ class TcpHandler(object):
     def on_disconnect(self):
         del self.clients[self.client_addr]
         logger.info("删除{}成功".format(self.client_addr))
-
-    def is_login(self):
-        return False
 
     @gen.coroutine
     def on_message(self):
@@ -65,4 +59,4 @@ class AgentServer(TCPServer):
 
     @gen.coroutine
     def handle_stream(self, stream, address):
-        yield TcpHandler(stream, self.clients).connect()
+        yield TcpHandler(stream, self.clients, self.application).connect()

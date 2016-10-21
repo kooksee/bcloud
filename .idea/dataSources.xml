@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1119115516">
+    <data-source source="LOCAL" name="Sqlite (Xerial) - bcloud.db" uuid="3a2e0138-3bab-469e-8f34-1a7ec5d0b0b5">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/files/bcloud.db</jdbc-url>
+    </data-source>
+  </component>
+</project>

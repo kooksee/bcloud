@@ -7,9 +7,11 @@ from tornado.escape import json_encode
 
 
 class MainHandler(tornado.web.RequestHandler):
-    def get(self):
+    def initialize(self, database):
+        print database
 
-        self.render('homepage.html')
+    def get(self, name="呵呵"):
+        self.write(json_encode({'result': name}))
 
     @tornado.web.asynchronous
     def post(self):

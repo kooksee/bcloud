@@ -54,7 +54,7 @@ class SimpleTCPClient(object):
 
 if __name__ == '__main__':
     try:
-        client = SimpleTCPClient('localhost', 8888)
+        client = SimpleTCPClient('localhost', 8887)
         client.connect()
         tornado.ioloop.IOLoop.instance().start()
     except Exception as e:
